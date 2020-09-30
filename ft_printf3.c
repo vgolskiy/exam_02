@@ -44,22 +44,26 @@ int		ft_strlen(char *s)
 int		ft_putchar(char ch, int len)
 {
 	int	i;
+	int	res;
 
 	i = -1;
+	res = 0;
 	while (++i < len)
-		write(1, &ch, 1);
-	return (len);
+		res += write(1, &ch, 1);
+	return (res);
 }
 
 int		ft_putstr(char *s, int len)
 {
 	int	i;
+	int	res;
 
 	i = -1;
+	res = 0;
 	if (s)
 		while ((++i < len) && (s[i]))
-			write(1, &s[i], 1);
-	return (len);
+			res += write(1, &s[i], 1);
+	return (res);
 }
 
 int		ft_isdigit(char ch)
@@ -102,6 +106,8 @@ void	print_until_perc(const char *s, t_type *f)
 void	parse_flags(const char *s, t_type *f)
 {
 	f->i++;
+	if ((s[f->i]) && (s[f->i] == '-'))
+		f->i++;
 	while ((s[f->i]) && (ft_isdigit(s[f->i])))
 		f->width = f->width * 10 + s[f->i++] - 48;
 	if (s[f->i] == '.')
@@ -143,7 +149,7 @@ void	print_d(t_type *f)
 		f->len = 0;
 	if ((f->prec_mark) && (f->prec > f->len))
 		f->zeros = f->prec - f->len;
-	f->res += ft_putchar(' ', f->width - (f->zeros + f->len));
+	f->res += ft_putchar(' ', f->width - (f->zeros + f->len + f->neg));
 	if (f->neg)
 		f->res += ft_putchar('-', 1);
 	f->res += ft_putchar('0', f->zeros);
