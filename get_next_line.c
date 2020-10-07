@@ -88,7 +88,6 @@ int	get_next_line(char **line)
 		if (buf[0] == '\n')
 		{
 			*line = left;
-			left = 00;
 			return (1);
 		}
 	}
